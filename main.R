@@ -18,7 +18,7 @@
 #' less_than_zero(c(-1,0,1,2,3,4))
 #' [1] TRUE FALSE FALSE FALSE FALSE FALSE
 less_than_zero <- function(x) {
-    return(NULL)
+    return(x<0)
 }
 
 #' Evaluate whether the argument is between two numbers
@@ -44,7 +44,7 @@ less_than_zero <- function(x) {
 #' [2,]  TRUE FALSE FALSE
 #' [3,] FALSE FALSE FALSE
 is_between <- function(x, a, b) {
-    return(NULL)
+    return(x>a & x<b)
 }
 
 #' Return the values of the input vector that are not NA
@@ -61,7 +61,8 @@ is_between <- function(x, a, b) {
 #' rm_na(x)
 #' [1] 1 2 3
 rm_na <- function(x) {
-    return(NULL)
+    x <- x[!is.na(x)]
+    return(x)
 }
 
 #' Calculate the median of each row of a matrix
@@ -80,7 +81,8 @@ rm_na <- function(x) {
 #' [1] 1 4 7
 #' 
 row_medians <- function(x) {
-    return(NULL)
+    medians <- apply(x, 1, median)
+    return(medians)
 }
 
 #' Evaluate each row of a matrix with a provided function
@@ -105,8 +107,9 @@ row_medians <- function(x) {
 #' summarize_rows(m, mean)
 #' [1] 2 5 8
 summarize_rows <- function(x, fn, na.rm=FALSE) {
-    return(NULL)
+  return(apply(x, 1, fn))
 }
+
 
 #' Summarize matrix rows into data frame
 #'
@@ -145,8 +148,20 @@ summarize_rows <- function(x, fn, na.rm=FALSE) {
 #' 3 -0.09040182 1.027559 -0.02774705 -3.026888 2.353087      130              54      0
 #' 4  0.09518138 1.030461  0.11294781 -3.409049 2.544992       90              72      0
 summarize_matrix <- function(x, na.rm=FALSE) {
-    return(NULL)
+  df1 <- data.frame(
+    mean=summarize_rows(x, mean),
+    stdev=summarize_rows(x, sd),
+    median=summarize_rows(x, median),
+    min=summarize_rows(x, min),
+    max=summarize_rows(x, max),
+    num_lt_0=summarize_rows(x, sum(less_than_zero(x))),
+    num_btw_1_and_5=summarize_rows(x,is_between(x, 1, 5)),
+    num_na=summarize_rows(x,sum(is.na(x)))
+    )
+    return(df1)
 }
+
+
 
 # ------------ Helper Functions Used By Assignment, You May Ignore ------------
 sample_normal <- function(n, mean=0, sd=1) {

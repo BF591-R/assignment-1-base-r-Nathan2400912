@@ -27,6 +27,7 @@ x <- sample_normal(10)
 less_than_zero(x)
 ```
 
+
 Recall that logical values `TRUE` and `FALSE` are numerically equal to 1 and 0,
 respectively. We can therefore perform arithmetic operations on them. A quick
 way to see how many values are `TRUE` in a logical vector by summing it:
@@ -165,7 +166,13 @@ gene_exp <- simulate_gene_expression(num_samples=30, num_genes=10)
 
 summary_df <- summarize_matrix(gene_exp)
 kableExtra::kable(summary_df)
+
 ```
+
+```{r}
+testthat::test_file('test_main.R')
+```
+
 
 ## 7. Challenge: Handle Missingness
 
