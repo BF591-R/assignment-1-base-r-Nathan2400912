@@ -104,7 +104,6 @@ a simulated gene expression matrix using the `row_medians()` function.
 # simulated gene expression dataset
 # NB: simulate_gene_expression is defined in main.R
 gene_exp <- simulate_gene_expression(num_samples=30, num_genes=10)
-row_medians(gene_exp)
 ```
 
 ## 5. Generalizing Row-wise Matrix Computations
@@ -119,7 +118,6 @@ to accept a matrix and a function in the `summarize_rows()` function.
 ```{r}
 # simulated gene expression dataset
 gene_exp <- simulate_gene_expression(num_samples=30, num_genes=10)
-
 # with median, same as above
 summarize_rows(gene_exp, median)
 ```
@@ -169,9 +167,6 @@ kableExtra::kable(summary_df)
 
 ```
 
-```{r}
-testthat::test_file('test_main.R')
-```
 
 
 ## 7. Challenge: Handle Missingness

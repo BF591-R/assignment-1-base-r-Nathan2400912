@@ -107,9 +107,9 @@ row_medians <- function(x) {
 #' summarize_rows(m, mean)
 #' [1] 2 5 8
 summarize_rows <- function(x, fn, na.rm=FALSE) {
-  return(apply(x, 1, fn))
+  rw <- apply(x, 1, fn)
+  return(rw)
 }
-
 
 #' Summarize matrix rows into data frame
 #'
@@ -154,28 +154,51 @@ summarize_matrix <- function(x, na.rm=FALSE) {
     median=summarize_rows(x, median),
     min=summarize_rows(x, min),
     max=summarize_rows(x, max),
-    num_lt_0=summarize_rows(x, sum(less_than_zero(x))),
-    num_btw_1_and_5=summarize_rows(x,is_between(x, 1, 5)),
-    num_na=summarize_rows(x,sum(is.na(x)))
-    )
-    return(df1)
+    num_lt_0=summarize_rows(x, function(row){
+      sum(less_than_zero(row))
+    }),
+    num_btw_1_and_5=summarize_rows(x, function(row){
+      sum(is_between(row, 1, 5))
+    }),
+    num_na=summarize_rows(x, function(row){
+      sum(is.na(row))
+    })
+  )
+  return(df1)
 }
 
 
 
 # ------------ Helper Functions Used By Assignment, You May Ignore ------------
 sample_normal <- function(n, mean=0, sd=1) {
-    return(NULL)
+  set.seed(1337)
+  samples <- rnorm(n, mean=mean, sd=sd)
+  return(samples)
 }
 
 sample_normal_w_missing <- function(n, mean=0, sd=1, missing_frac=0.1) {
-    return(NULL)
+  set.seed(1337)
+  samples <- rnorm(n, mean=mean, sd=sd)
+  missing <- rbinom(length(samples), 1, missing_frac)==1
+  samples[missing] <- NA
+  return(samples)
 }
 
 simulate_gene_expression <- function(num_samples, num_genes) {
-    return(NULL)
+  set.seed(1337)
+  gene_exp <- matrix(
+    rnbinom(num_samples*num_genes, rlnorm(num_genes,meanlog = 3), prob=runif(num_genes)),
+    nrow=num_genes
+  )
+  return(gene_exp)
 }
 
 simulate_gene_expression_w_missing <- function(num_samples, num_genes, missing_frac=0.1) {
-    return(NULL)
+  gene_exp <- simulate_gene_expression(num_samples, num_genes)
+  missing <- matrix(
+    rbinom(num_samples*num_genes, 1, missing_frac)==1,
+    nrow=num_genes
+  )
+  gene_exp[missing] <- NA
+  return(gene_exp)
 }
